@@ -4,11 +4,7 @@ using UnityEngine;
 
 public class ObstacleSpawner : MonoBehaviour
 {
-    public GameObject prefab;
-    public float spawnInterval = 5f;
     private float spawnCooldown = 0f;
-
-    public Transform spawnPoint;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,20 +15,26 @@ public class ObstacleSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!GameManager.Instance.isGameActive){
+        if(GameManager.Instance.IsGameOver()){
             return;
         }
         spawnCooldown -= Time.deltaTime;
-        bool canSpawn = spawnCooldown <= 0;
+        bool canSpawn = spawnCooldown <= 0f;
         if(canSpawn){
             Spawn();
         }
     }
 
     void Spawn(){
-        spawnCooldown = spawnInterval;
-        Vector3 position = spawnPoint != null ? spawnPoint.position : new Vector3(43f,0,0);
-        Instantiate(prefab,position,Quaternion.identity);
+        var gameManager = GameManager.Instance;
+        var prefabs = gameManager.obstaclePrefabs;
+        var prefab = prefabs[Random.Range(0,prefabs.Count)];
+        spawnCooldown = gameManager.obstacleInterval;
+        float x = gameManager.obstacleOffsetX;
+        float y = Random.Range(gameManager.obstacleOffsetY.x,gameManager.obstacleOffsetY.y);
+        Vector3 position = new Vector3(x,y,0);
+        var rotation = prefab.transform.rotation;
+        Instantiate(prefab,position,rotation);
     }
 
     

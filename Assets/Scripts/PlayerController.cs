@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody thisRigidbody;
     public float jumpPower = 10f;
     public float jumpInterval = 0.5f;
-    public float jumpCooldown = 0f;
+    private float jumpCooldown = 0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,12 +18,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!GameManager.Instance.isGameActive){
-            return;
-        }
+        var gameManager = GameManager.Instance;
         jumpCooldown -= Time.deltaTime;
         
-        bool canJump = jumpCooldown <= 0;
+        bool canJump = jumpCooldown <= 0 && gameManager.IsGameActive();
         if(canJump){
             bool jumpInput = Input.GetKey(KeyCode.Space);
             if(jumpInput){
@@ -31,13 +29,22 @@ public class PlayerController : MonoBehaviour
             }
         }
         
-        
+        thisRigidbody.useGravity = gameManager.IsGameActive();
     }
 
     void Jump(){
         jumpCooldown = jumpInterval;
 
-        this.thisRigidbody.velocity = Vector3.zero;
+        thisRigidbody.velocity = Vector3.zero;
         thisRigidbody.AddForce(new Vector3(0,jumpPower,0),ForceMode.Impulse);
+    }
+
+    void OnTriggerEnter(Collider other){
+        var gameManager = GameManager.Instance;
+        bool isSensor = other.gameObject.CompareTag("Sensor");
+        if(isSensor){
+            gameManager.score++;
+            Debug.Log("Score: " +  gameManager.score);
+        }
     }
 }

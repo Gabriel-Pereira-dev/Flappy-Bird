@@ -7,11 +7,15 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager Instance { get;private set;}
+    public List<GameObject> obstaclePrefabs;
     public float obstacleSpeed = 10f;
+    public float obstacleInterval = 1f;
+    public Vector2 obstacleOffsetY = new Vector2(0,0);
+    public float obstacleOffsetX = 0f;
+    [HideInInspector]
     public int score = 0;
     public GameObject player;
-    [HideInInspector]
-    public bool isGameActive {get; private set;} = true;
+    private bool isGameOver;
     public float restartDelay = 5.0f;
     public float gameHeight = 8.8f;
     public float gameWidth = 31f;
@@ -24,11 +28,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public bool IsGameActive(){
+        return !isGameOver;
+    }
+
+    public bool IsGameOver(){
+        return isGameOver;
+    }
+
     public void GameOver(){
-        if(!isGameActive){
+        if(IsGameOver()){
             return;
         }
-        isGameActive = false;
+        isGameOver = true;
 
     }
 
