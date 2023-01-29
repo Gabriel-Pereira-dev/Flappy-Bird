@@ -212,11 +212,11 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
+  m_fontSize: 25
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 20
+  m_fontSizeMin: 25
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
@@ -1319,7 +1319,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &892281183
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1526,7 +1526,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Score
 
-    00'
+    0'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a2a9415e257b50d45aa5bfc1b041773f, type: 2}
   m_sharedMaterial: {fileID: 6971920332241934219, guid: a2a9415e257b50d45aa5bfc1b041773f,
