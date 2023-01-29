@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
             if(isPressingEnter){
                 GameManager.Instance.RestartGame();
             }
+            canJump = false;
            return;
        }
 
@@ -54,10 +55,6 @@ public class PlayerController : MonoBehaviour
 
         thisRigidbody.velocity = Vector3.zero;
         thisRigidbody.AddForce(new Vector3(0,jumpPower,0),ForceMode.Impulse);
-    }
-
-    void CreateChild(){
-
     }
 
     void OnTriggerEnter(Collider other){
