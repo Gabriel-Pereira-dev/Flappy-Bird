@@ -5,6 +5,7 @@ using UnityEngine;
 public class ObstacleSpawner : MonoBehaviour
 {
     private float spawnCooldown = 0f;
+    public CoinSpawner coinSpawner;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +36,11 @@ public class ObstacleSpawner : MonoBehaviour
         Vector3 position = new Vector3(x,y,0);
         var rotation = prefab.transform.rotation;
         Instantiate(prefab,position,rotation);
+        bool spawnCoin = Random.Range(0f,1f) > 0.55f;
+
+        if(coinSpawner != null && spawnCoin){
+            coinSpawner.Spawn(position);
+        }
     }
 
     
