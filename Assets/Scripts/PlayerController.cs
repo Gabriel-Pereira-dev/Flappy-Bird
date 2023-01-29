@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PlayerController : MonoBehaviour
 
@@ -9,6 +10,11 @@ public class PlayerController : MonoBehaviour
     public float jumpPower = 10f;
     public float jumpInterval = 0.5f;
     private float jumpCooldown = 0f;
+
+    private bool canJump = false;
+
+    public static event Action OnPlayerScored;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,18 +24,29 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var gameManager = GameManager.Instance;
+        if(GameManager.Instance.IsGameOver()){
+            bool isPressingEnter = Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter);
+            if(isPressingEnter){
+                GameManager.Instance.RestartGame();
+            }
+           return;
+       }
+
         jumpCooldown -= Time.deltaTime;
+        var gameManager = GameManager.Instance;
+        canJump = jumpCooldown <= 0 && gameManager.IsGameActive();
         
-        bool canJump = jumpCooldown <= 0 && gameManager.IsGameActive();
+        
+        // thisRigidbody.useGravity = gameManager.IsGameActive();
+    }
+
+    void FixedUpdate(){
         if(canJump){
             bool jumpInput = Input.GetKey(KeyCode.Space);
             if(jumpInput){
                 Jump();
             }
         }
-        
-        thisRigidbody.useGravity = gameManager.IsGameActive();
     }
 
     void Jump(){
@@ -39,11 +56,15 @@ public class PlayerController : MonoBehaviour
         thisRigidbody.AddForce(new Vector3(0,jumpPower,0),ForceMode.Impulse);
     }
 
+    void CreateChild(){
+
+    }
+
     void OnTriggerEnter(Collider other){
         var gameManager = GameManager.Instance;
         bool isSensor = other.gameObject.CompareTag("Sensor");
         if(isSensor){
-            gameManager.score++;
+            OnPlayerScored.Invoke();
             Debug.Log("Score: " +  gameManager.score);
         }
     }

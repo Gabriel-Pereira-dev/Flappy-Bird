@@ -8,7 +8,6 @@ public class CollisionGameOver : MonoBehaviour
     void OnCollisionEnter(Collision other){
         Debug.Log("Colidiu "+ other.gameObject.name);
         if(other.gameObject.CompareTag("Player")){
-            Destroy(other.gameObject);
             GameManager.Instance.GameOver();
         }
     }
